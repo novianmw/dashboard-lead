@@ -3,6 +3,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Jost } from "next/font/google"
 import { RiBankLine, RiBookOpenLine, RiFunctionLine } from "react-icons/ri"
+import Maintenance from "@/components/Maintenance"
 
 const jost = Jost({
     subsets: ["latin"],
@@ -35,9 +36,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={jost.className}>
-                <div className="w-full flex flex-row items-start">
+                <div className="w-full hidden lg:flex flex-row items-start">
                     <MainMenu items={MainMenuItems} />
                     {children}
+                </div>
+                <div className="h-full w-full flex place-content-center lg:hidden">
+                    <Maintenance/>
                 </div>
             </body>
         </html>
