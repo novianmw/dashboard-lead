@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  password  String
+  image     String
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  role      Role     @default(USER)
+  bank      Bank[]
+  report    Report[]
+}
+
+model Bank {
+  id          String @id @default(uuid())
+  codeBank    String
+  name        String
+  companyName String
+  users       User[]
+}
+
+model Report {
+  id     String   @id @default(uuid())
+  date   DateTime @default(now())
+  detail String
+  status ReportStatus
+  label  ReportLabel
+  amount Float
+  user   User @relation(fields: [id], references: [id])
+
+  @@index([id])
+}
+
+model BankToUser {
+  A String
+  B String
+
+  @@unique([A, B], map: "_BankToUser_AB_unique")
+  @@index([B], map: "_BankToUser_B_index")
+  @@map("_BankToUser")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ReportStatus {
+  Transfer
+  Payment
+}
+
+enum ReportLabel {
+  Income
+  Outcome
+  Subscription
+}
