@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 import prisma from "../db"
 
-export const getBank = async () => {
+export const getBank = async (req: NextRequest) => {
     const bank = await prisma.bank.findMany()
-    return bank
+    return NextResponse.json({bank})
 }
 
 export const createBank = async (req: NextRequest, res: NextResponse) => {
