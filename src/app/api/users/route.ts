@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server"
 import prisma from "../db"
 
 // list User
-export const getUser = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
     const user = await prisma.user.findMany({})
     return NextResponse.json({ user })
 }
 
 // Register USER
-export const createUser = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
     try {
         const { firstName, lastName, email, password, image } = await req.json()
         const salt = await bcrypt.genSalt(10)
@@ -63,7 +63,7 @@ export const infoId = async (req: NextRequest, context: { params: { id: string }
 }
 
 // Edit User
-export const editUser = async (req: NextRequest) => {
+export const PATCH = async (req: NextRequest) => {
     const { firstName, lastName, id, image } = await req.json()
     const user = await prisma.user.update({
         where: {
@@ -79,7 +79,7 @@ export const editUser = async (req: NextRequest) => {
 }
 
 // Delete User
-export const deleteUser = async (req: NextRequest, context: { params: { id: string } }) => {
+export const DELETE = async (req: NextRequest, context: { params: { id: string } }) => {
     try {
         const id = context.params.id
         const user = await prisma.user.delete({
